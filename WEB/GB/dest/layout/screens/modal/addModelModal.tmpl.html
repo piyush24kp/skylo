@@ -1,0 +1,31 @@
+<div -ng-controller="addModalCtr as vm">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Add Model </h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            
+           <form name="Order">
+              <div class="form-group">
+                <label for="Brand">Brand</label>
+                <!-- <input type="text" class="form-control" id="brand" ng-model="vm.order.brand"> -->
+                <select id="brand" ng-model="vm.order.brandId" class="form-control" ng-options="brand.brandId as brand.brandName for brand in vm.brandDetail"></select>
+              </div>
+              <div class="form-group">
+                <label for="modelName">Model Name</label>
+                <input type="text" class="form-control" id="modelName" ng-model="vm.order.modelName">
+              </div>
+              <div class="form-group">
+                <label for="storage">Storage</label>
+                <input type="text" class="form-control" id="storage" ng-model="vm.order.storage">
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" ng-model="vm.order.price">
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="vm.saveModel()" ng-disabled="!Order.$valid">Save</button>
+            <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+        </div>
+</div>

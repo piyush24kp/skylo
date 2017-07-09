@@ -1,0 +1,73 @@
+<div -ng-controller="addModalCtr as vm">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Sell Order </h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            
+           <form name="Order" class="row">
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="customerName">Cutomer Name</label>
+                <input type="text" class="form-control" id="orderName" ng-model="vm.order.customerName" required>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="contactNo">Contact No</label>
+                <input type="number" class="form-control" id="contactNo" ng-model="vm.order.contactNo">
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" ng-model="vm.order.address">
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Brand">Brand</label>
+                <select id="brand" ng-model="vm.order.brand" class="form-control" ng-options="brand.brandId as brand.brandName for brand in vm.brandDetail" ng-change="vm.changeBrand(vm.order.brand)"></select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Model">Model</label>
+                <select id="model" ng-model="vm.order.model" class="form-control" ng-options="model.modelId as model.modelName for model in vm.modelDetail"></select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="imeiNo">IMEI No</label>
+                <input type="number" class="form-control" id="PurchasePrice" ng-model="vm.order.imeiNo" required>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="saleType">Sale Type</label>
+                <select id="brand" ng-model="vm.order.saleType" class="form-control">
+                  <option value="Offline">Offline</option>
+                  <option value="Online">Online</option>
+                </select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6" ng-if="vm.order.saleType == 'Online'">
+                <label for="saleType">Vendor</label>
+                <select id="brand" ng-model="vm.order.vendor" class="form-control">
+                  <option value="Amazon">Amazon</option>
+                  <option value="FlipKart">FlipKart</option>
+                </select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="saleType">Payment</label>
+                <select id="payment" ng-model="vm.order.payment" class="form-control">
+                    <option value="Due">Due</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Returned">Returned</option>
+                  </select>
+                </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="amount">Amount</label>
+                 <input type="number" class="form-control" id="amount" ng-model="vm.order.amount">
+              </div>
+              <div class="form-group col-md-6">
+              <label for="Quantity">Order Date</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="vm.order.sellDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="vm.setSellOrder()" ng-disabled="!Order.$valid">Save</button>
+            <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+        </div>
+</div>

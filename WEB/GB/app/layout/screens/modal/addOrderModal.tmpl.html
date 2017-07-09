@@ -1,0 +1,58 @@
+<div -ng-controller="addModalCtr as vm">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Add Order </h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            
+           <form name="Order" class="row">
+              
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="suppliedBy">Supplied By</label>
+                <select  class="form-control" id="sellPrice" ng-model="vm.order.suppliedBy" ng-options="sup.supplierId as sup.supplierName for sup in vm.suppliyers"></select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Category">Category</label>
+                <input type="text" class="form-control" id="category" ng-model="vm.order.category">
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Brand">Brand</label>
+                <!-- <input type="text" class="form-control" id="brand" ng-model="vm.order.brand"> -->
+                <select id="brand" ng-model="vm.order.brand" class="form-control" ng-options="brand.brandId as brand.brandName for brand in vm.brandDetail" ng-change="vm.changeBrand(vm.order.brand)"></select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Model">Model</label>
+                <select id="model" ng-model="vm.order.model" class="form-control" ng-options="model.modelId as model.modelName for model in vm.modelDetail"></select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Quantity">Quantity</label>
+                <input type="number" class="form-control" id="orderName" ng-model="vm.order.quantity" required>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="PurchasePrice">Purchase Price</label>
+                <input type="number" class="form-control" id="PurchasePrice" ng-model="vm.order.purchasePrice" required>
+              </div>
+               <div class="form-group col-lg-6 col-md-6">
+                <label for="sellPrice">Selling Price</label>
+                <input type="number" class="form-control" id="sellPrice" ng-model="vm.order.sellPrice">
+              </div>
+              
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="OrderName">Remark</label>
+                <input type="text" class="form-control" id="orderName" ng-model="vm.order.orderName" required>
+              </div>
+              <div class="form-group col-md-6">
+              <label for="Quantity">Date</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="vm.order.orderDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="vm.ok()" ng-disabled="!Order.$valid">Save</button>
+            <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+        </div>
+</div>

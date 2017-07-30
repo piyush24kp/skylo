@@ -11,13 +11,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.gb.model.OrderDetail;
+import com.gb.model.SizeDetail;
 import com.gb.model.SupplierDetail;
 import com.gb.model.BrandDetail;
 import com.gb.model.CategoryDetail;
+import com.gb.model.HistoryDetail;
 import com.gb.model.userDetails;
 import com.gb.vo.AllModelsVo;
 import com.gb.vo.BrandDetailVo;
 import com.gb.vo.OrderDetailVo;
+import com.gb.vo.OrderDetailVo2;
 import com.gb.vo.SupplierDetailVo;
 
 @Repository
@@ -26,9 +29,10 @@ public class OrderRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public List<OrderDetail> getOrders() {
+	public List<OrderDetail> getOrders(Integer size, Integer page) {
 		List<OrderDetail> orderDetail = null;
-		String baseQuery = "select * FROM orderDetails";
+		page = page *size;
+		String baseQuery = "select * FROM orderDetails LIMIT "+size+" OFFSET "+page;
 		orderDetail = jdbcTemplate.query(baseQuery, new BeanPropertyRowMapper(OrderDetail.class));
 		return orderDetail;
 	}
@@ -40,26 +44,33 @@ public class OrderRepository {
 		return orderDetail;
 	}
 
-	public OrderDetail getOrders(Long orderID) {
+	public OrderDetail getOrders(Long orderId) {
 		List<OrderDetail> orderDetail = null;
-		String baseQuery = "select * FROM orderDetails WHERE orderId =" + orderID;
+		String baseQuery = "select * FROM orderDetails WHERE orderId =" + orderId;
 		orderDetail = jdbcTemplate.query(baseQuery, new BeanPropertyRowMapper(OrderDetail.class));
 		return orderDetail.get(0);
 	}
 
-	public Integer createOrder(OrderDetail odDetailVo) {
-		String baseQuery = "INSERT INTO orderDetails(orderId, orderName,quantity,brand,purchasePrice,sellPrice,suppliedBy,orderDate,model) VALUES(?,?,?,?,?,?,?,?,?)";
-		Object[] params = new Object[] { odDetailVo.getOrderId(), odDetailVo.getOrderName(), odDetailVo.getQuantity(),
-				odDetailVo.getBrand(),  odDetailVo.getPurchasePrice(),
-				odDetailVo.getSellPrice(), odDetailVo.getSuppliedBy(),odDetailVo.getOrderDate(),odDetailVo.getModel() };
+	public Integer createOrder(OrderDetailVo2 odDetailVo) {
+		String baseQuery = "INSERT INTO orderDetails(orderId, orderName,amount,brand,suppliedBy,orderDate,model,size) VALUES(?,?,?,?,?,?,?,?)";
+		Object[] params = new Object[] { odDetailVo.getOrderId(), odDetailVo.getOrderName(),odDetailVo.getAmount(), 
+				odDetailVo.getBrand(), 
+				odDetailVo.getSuppliedBy(),odDetailVo.getOrderDate(),odDetailVo.getModel(),odDetailVo.getSize().getSizeId() };
 		return jdbcTemplate.update(baseQuery, params);
 	}
 
-	public Integer updateOrder(OrderDetail odDetailVo) {
-		String baseQuery = "UPDATE orderDetails set orderId = ?, orderName = ?,quantity = ?,brand = ?,purchasePrice = ?,sellPrice = ?,suppliedBy = ?,orderDate = ?,model = ? WHERE orderId = ?";
-		Object[] params = new Object[] { odDetailVo.getOrderId(), odDetailVo.getOrderName(), odDetailVo.getQuantity(),
-				odDetailVo.getBrand(),  odDetailVo.getPurchasePrice(),
-				odDetailVo.getSellPrice(), odDetailVo.getSuppliedBy(), odDetailVo.getOrderDate(),odDetailVo.getModel() ,odDetailVo.getOrderId() };
+	public Integer updateOrder(OrderDetail detail) {
+		String baseQuery = "UPDATE orderDetails set orderId = ?, orderName = ?,amount=?,brand = ?,suppliedBy = ?,orderDate = ?,model = ? ,size=? WHERE orderId = ?";
+		Object[] params = new Object[] { detail.getOrderId(), detail.getOrderName(),detail.getAmount(),
+				detail.getBrand(), 
+				 detail.getSuppliedBy(), detail.getOrderDate(),detail.getModel() ,detail.getSize(),detail.getOrderId() };
+		return jdbcTemplate.update(baseQuery, params);
+	}
+	public Integer updateOrder(OrderDetailVo2 detail) {
+		String baseQuery = "UPDATE orderDetails set orderId = ?, orderName = ?,amount=?,brand = ?,suppliedBy = ?,orderDate = ?,model = ? ,size=? WHERE orderId = ?";
+		Object[] params = new Object[] { detail.getOrderId(), detail.getOrderName(),detail.getAmount(),
+				detail.getBrand(), 
+				 detail.getSuppliedBy(), detail.getOrderDate(),detail.getModel() ,detail.getSize().getSizeId(),detail.getOrderId() };
 		return jdbcTemplate.update(baseQuery, params);
 	}
 	
@@ -213,8 +224,60 @@ public class OrderRepository {
 	}
 
 	public Integer deleteModel(Long id) {
-		String baseQuery = "DELETE model brands WHERE modelId = ?";
+		String baseQuery = "DELETE from brands WHERE modelId = ?";
 		Object[] params = new Object[] { id };
 		return jdbcTemplate.update(baseQuery, params);
+	}
+
+	public Integer deleteAllModelByBrand(Long brandId) {
+		String baseQuery = "DELETE from models WHERE brandId = ?";
+		Object[] params = new Object[] { brandId };
+		return jdbcTemplate.update(baseQuery, params);
+	}
+
+	public void createHistory(HistoryDetail hd) {
+		String baseQuery = "INSERT INTO history(historyType,productDetail,createdDate,size,amount) VALUES(?,?,?,?,?)";
+		Object[] params = new Object[] { hd.getHistoryType(),hd.getProductDetail(),hd.getCreatedDate(),hd.getSize(),hd.getAmount() };
+		jdbcTemplate.update(baseQuery, params);
+		
+	}
+
+	public int updateHistory(Long productDetail) {
+		String baseQuery = "UPDATE history set status ='D' WHERE productDetail = '"+productDetail+ "'";
+		return jdbcTemplate.update(baseQuery);
+		
+	}
+
+	public int getOrderCount() {
+		String baseQuery = "select count(*) FROM orderDetails";
+		return jdbcTemplate.queryForObject(baseQuery,Integer.class);
+	}
+
+	public SizeDetail getSizeById(Long sizeId) {
+		List<SizeDetail> sizeDetail = new ArrayList();
+		String baseQuery = "select * FROM size where sizeId = '"+ sizeId+"'";
+		sizeDetail = jdbcTemplate.query(baseQuery, new BeanPropertyRowMapper(SizeDetail.class));
+		return sizeDetail.get(0);
+	}
+
+	public int createSize(SizeDetail s) {
+		String baseQuery = "INSERT INTO size(s,m,l,xl,xxl,xxxl) VALUES(?,?,?,?,?,?)";
+		Object[] params = new Object[] { s.getS(),s.getM(),s.getL(),s.getXl(),s.getXxl(),s.getXxxl() };
+		return jdbcTemplate.update(baseQuery, params);
+		
+	}
+	
+	public int updateSize(SizeDetail s) {
+		String baseQuery = "UPDATE size set s=?,m=?,l=?,xl=?,xxl=?,xxxl=? WHERE sizeId = ?";
+		Object[] params = new Object[] { s.getS(),s.getM(),s.getL(),s.getXl(),s.getXxl(),s.getXxxl(),s.getSizeId() };
+		return jdbcTemplate.update(baseQuery, params);
+		
+	}
+	
+	public SizeDetail getSizeLastUpdated() {
+		List<SizeDetail> details = new ArrayList();
+		String baseQuery = "select * FROM size WHERE sizeId = (select MAX(sizeId) from size)";
+		details = jdbcTemplate.query(baseQuery, new BeanPropertyRowMapper(SizeDetail.class));
+		return details.get(0);
 	}
 }

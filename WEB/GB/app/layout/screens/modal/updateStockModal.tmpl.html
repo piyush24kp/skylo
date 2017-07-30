@@ -10,39 +10,20 @@
                 <input type="text" class="form-control" id="orderName" ng-model="vm.order.orderId" required ng-disabled="true">
               </div>
               <div class="form-group col-lg-6 col-md-6">
-                <label for="OrderName">Order Name</label>
-                <input type="text" class="form-control" id="orderName" ng-model="vm.order.orderName" required>
-              </div>
-              <div class="form-group col-lg-6 col-md-6">
-                <label for="Category">Category</label>
-                <input type="text" class="form-control" id="category" ng-model="vm.order.category">
-              </div>
-              <div class="form-group col-lg-6 col-md-6">
-                <label for="Brand">Brand</label>
-                <select id="brand" ng-model="vm.order.brand" class="form-control" ng-options="brand.brandId as brand.brandName for brand in vm.brandDetail" ng-change="vm.changeBrand(vm.order.brand)"></select>
-               <!--  <input type="text" class="form-control" id="orderName" ng-model="vm.order.brand.brandName" ng-disabled="true" required> -->
-              </div>
-              <div class="form-group col-lg-6 col-md-6">
-                <label for="Model">Model</label>
-                <select id="model" ng-model="vm.order.model" class="form-control" ng-options="model.modelId as model.modelName for model in vm.modelDetail" ng-if="vm.dirtyCheck"></select>
-               <input type="text" class="form-control" id="orderName" ng-model="vm.order.model.modelName" ng-if="!vm.dirtyCheck" ng-disabled="true" required>
-              </div>
-              <div class="form-group col-lg-6 col-md-6">
-                <label for="Quantity">Quantity</label>
-                <input type="number" class="form-control" id="orderName" ng-model="vm.order.quantity" required>
-              </div>
-              <div class="form-group col-lg-6 col-md-6">
-                <label for="PurchasePrice">Purchase Price</label>
-                <input type="number" class="form-control" id="PurchasePrice" ng-model="vm.order.purchasePrice" required>
-              </div>
-               <div class="form-group col-lg-6 col-md-6">
-                <label for="sellPrice">Selling Price</label>
-                <input type="number" class="form-control" id="sellPrice" ng-model="vm.order.sellPrice">
-              </div>
-              <div class="form-group col-lg-6 col-md-6">
                 <label for="suppliedBy">Supplied By</label>
                 <select  class="form-control" id="sellPrice" ng-model="vm.order.suppliedBy" ng-options="sup.supplierId as sup.supplierName for sup in vm.suppliyers"></select>
               </div>
+              
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Brand">Brand</label>
+                <select id="brand" ng-model="vm.order.brand" class="form-control" ng-options="brand.brandId as brand.brandName for brand in vm.brandDetail" ng-change="vm.changeBrand(vm.order.brand)"></select>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <label for="Model">Model</label>
+                <select id="model" ng-model="vm.order.model" class="form-control" ng-options="model.modelId as model.modelName for model in vm.modelDetail" ng-change="vm.getPerUnit()" ng-if="vm.dirtyCheck"></select>
+               <input type="text" class="form-control" id="orderName" ng-model="vm.order.model.modelName" ng-if="!vm.dirtyCheck" ng-change="vm.getPerUnit()" ng-disabled="true" required>
+              </div>
+              
               <div class="form-group col-md-6">
               <label for="Quantity">Order Date</label>
                 <div class="input-group">
@@ -52,6 +33,48 @@
                   </span>
                 </div>
               </div>
+            
+               <div class="form-group col-lg-6 col-md-6">
+                  <label for="OrderName">Remark</label>
+                  <input type="text" class="form-control" id="orderName" ng-model="vm.order.orderName" required>
+                </div>
+
+              <div class="form-group col-lg-12 col-md-12">
+               
+                <div class="col-lg-2">
+                   <label for="Size">Select Size(S)</label>
+                <input class=" form-control" placeholder="S" type="number" ng-model="vm.order.size.s" ng-change="vm.getAmount()"></input>
+                </div>
+                <div class="col-lg-2">
+                   <label for="Size">(M)</label>
+                  <input class=" form-control" placeholder="M" type="number" ng-model="vm.order.size.m" ng-change="vm.getAmount()"></input>
+                </div>
+                 <div class="col-lg-2">
+                    <label for="Size">(L)</label>
+                  <input class="form-control" placeholder="L" type="number" ng-model="vm.order.size.l" ng-change="vm.getAmount()"></input>
+                 </div>
+                <div class="col-lg-2">
+                  <label for="Size">(Xl)</label>
+                  <input class="form-control" placeholder="XL" type="number" ng-model="vm.order.size.xl" ng-change="vm.getAmount()"></input>
+                 </div>
+                <div class="col-lg-2">
+                  <label for="Size">(XXl)</label>
+                  <input class="form-control" placeholder="XXL" type="number" ng-model="vm.order.size.xxl" ng-change="vm.getAmount()"></input>
+                 </div>
+                <div class="col-lg-2">
+                  <label for="Size">(XXXl)</label>
+                  <input class="form-control" placeholder="XXXL" type="number" ng-model="vm.order.size.xxxl" ng-change="vm.getAmount()"></input>
+                </div>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6">
+                  <label for="PurchasePrice">Amount({{vm.perUnit}} / Per Unit)</label>
+                  <span ng-if="vm.perUnit"></span>
+                  <input type="number" class="form-control" id="PurchasePrice" ng-model="vm.order.amount"  required>
+                </div>
+
+               
+
             </form>
         </div>
         <div class="modal-footer">

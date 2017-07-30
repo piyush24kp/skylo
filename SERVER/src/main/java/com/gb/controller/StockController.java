@@ -27,6 +27,8 @@ import com.gb.vo.AllSuppliersDetailVo;
 import com.gb.vo.BrandDetailVo;
 import com.gb.vo.CategoryDetailVo;
 import com.gb.vo.OrderDetailVo;
+import com.gb.vo.OrderDetailVo2;
+import com.gb.vo.Page;
 import com.gb.vo.ResponceData;
 import com.gb.vo.SupplierDetailVo;
 import com.gb.vo.UserDetailsVo;
@@ -40,11 +42,20 @@ public class StockController {
 	OrderServiceImpl orderServiceImpl;
 	
 	@RequestMapping(value = "/getOrders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <ResponceData> getOrders(){
+	public ResponseEntity <ResponceData> getOrders(@QueryParam("size")Integer size , @QueryParam("page")Integer page ){
 		ResponceData responce = new ResponceData();
-		List<OrderDetailVo> orderDetail  = orderServiceImpl.getOrders(); 
+		if(size == null){
+			size = 10;
+		}
+		if(page == null){
+			page = 0;
+		}
+		List<OrderDetailVo> orderDetail  = orderServiceImpl.getOrders(size,page); 
 		if (orderDetail.size()>0)
     	{	
+			Page page2 = orderServiceImpl.getPagination(size,page);
+			page2.setCount(orderDetail.size());
+			responce.setPage(page2);
 			responce.setDatabean(orderDetail);
 			responce.setMessage("Success");
     		return new ResponseEntity<ResponceData>(responce, HttpStatus.OK);	
@@ -55,7 +66,7 @@ public class StockController {
 	}
 	
 	@RequestMapping(value = "/setOrders", method = RequestMethod.POST, produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponceData> setOrders(@RequestBody OrderDetail orderDetail) { 
+    public ResponseEntity<ResponceData> setOrders(@RequestBody OrderDetailVo2 orderDetail) { 
 		OrderDetailVo orderDetailvo = orderServiceImpl.createOrder(orderDetail);
 		ResponceData responce = new ResponceData();
 		if(orderDetailvo != null){
@@ -67,7 +78,7 @@ public class StockController {
     }
 	
 	@RequestMapping(value = "/updateOrder", method = RequestMethod.POST, produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponceData> updateOrder(@RequestBody OrderDetail orderDetail) { 
+    public ResponseEntity<ResponceData> updateOrder(@RequestBody OrderDetailVo2 orderDetail) { 
 		boolean flag = orderServiceImpl.updateOrder(orderDetail);
 		ResponceData responce = new ResponceData();
 		if(flag){
@@ -193,6 +204,7 @@ public class StockController {
 	@RequestMapping(value = "/deleteBrand", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponceData> deleteBrand(@QueryParam("id")Long id){
 		ResponceData responce = new ResponceData();
+		System.out.println("id"+id);
 		if (orderServiceImpl.deleteBrands(id))
     	{
 			responce.setMessage("Deleted Succesfully.");

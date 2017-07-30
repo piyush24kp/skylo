@@ -1,6 +1,6 @@
-<div class="container sign-up" style="margin-top: 10%;">
+<div class="col-lg-4" style=" width: 25%; margin: auto; float: none; margin-top: 10%; ">
    
-  <form name="loginForm" >
+  <form name="loginForm" class="col-lg-12 login-form" ng-submit="vm.loginForm()">
     <div class="form-group">
       <label for="username">User Name</label>
       <input type="text" class="form-control" id="userId" ng-model="vm.login.userId" required>
@@ -11,6 +11,6 @@
       <input type="password" class="form-control" id="Password" ng-model="vm.login.password" required>
     </div>
 
-     <button class="btn btn-primary" type="button" ng-click="vm.loginForm()" ng-disabled="!loginForm.$valid">Login</button>
+     <button class="btn btn-primary" type="submit"  ng-disabled="!loginForm.$valid">Login</button>
   </form>
 </div>

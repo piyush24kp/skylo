@@ -9,14 +9,12 @@ public class OrderDetailVo {
 	
 	private Long orderId;
 	private String orderName;
-	private Integer amount;
-	private Integer quantity;
+	private Long amount;
 	private BrandDetailVo brand;
-	private Integer purchasePrice;
-	private Integer sellPrice;
 	private AllSuppliersDetailVo suppliedBy;
 	private Date orderDate;
 	private AllModelsVo model;
+	private SizeDetailVo size;
 	
 	public Long getOrderId() {
 		return orderId;
@@ -30,35 +28,17 @@ public class OrderDetailVo {
 	public void setOrderName(String orderName) {
 		this.orderName = orderName;
 	}
-	public Integer getAmount() {
+	public Long getAmount() {
 		return amount;
 	}
-	public void setAmount(Integer amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
-	}
-	public Integer getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 	public BrandDetailVo getBrand() {
 		return brand;
 	}
 	public void setBrand(BrandDetailVo brand) {
 		this.brand = brand;
-	}
-	public Integer getPurchasePrice() {
-		return purchasePrice;
-	}
-	public void setPurchasePrice(Integer purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
-	public Integer getSellPrice() {
-		return sellPrice;
-	}
-	public void setSellPrice(Integer sellPrice) {
-		this.sellPrice = sellPrice;
 	}
 	public AllSuppliersDetailVo getSuppliedBy() {
 		return suppliedBy;
@@ -78,5 +58,11 @@ public class OrderDetailVo {
 	}
 	public void setModel(AllModelsVo model) {
 		this.model = model;
+	}
+	public SizeDetailVo getSize() {
+		return size;
+	}
+	public void setSize(SizeDetailVo size) {
+		this.size = size;
 	}
 }

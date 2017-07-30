@@ -58,21 +58,38 @@
             }
         }*/
 
+        $rootScope.$on('sellOrder', function(event, args) {
+            vm.getSellOrders();
+        });
+
         vm.paymentChange = paymentChange;
 
         function paymentChange(row) {
 
             var tmpData = row;
+            var model = {};
+            var brand = {};
+            angular.copy(tmpData.brand, brand);
+            angular.copy(tmpData.model, model);
             tmpData.brand = tmpData.brand.brandId;
             tmpData.model = tmpData.model.modelId;
 
-            return authfactory.updateSellOrder(row).then(function successCallback(response) {
+            // console.log(tmpData);
+            return authfactory.updateSellOrder(tmpData).then(function successCallback(response) {
                 if (response.status === 200) {
-                    toastr.success("Stock Added");
+                    toastr.success("Updated Successfully");
                 }
+                if (row.payment === 'Paid' || row.payment === 'Due') {
+                    row.returnDate = '';
+                }
+                row.brand = brand;
+                row.model = model;
             }, function errorCallback(response) {
+                row.brand = brand;
+                row.model = model;
                 return false;
             });
+
         }
 
         vm.selectTab = selectTab;

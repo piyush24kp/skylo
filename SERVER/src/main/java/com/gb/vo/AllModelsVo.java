@@ -4,6 +4,7 @@ public class AllModelsVo {
 
 	private Long modelId;
 	private String modelName;
+	private String price;
 	
 	public Long getModelId() {
 		return modelId;
@@ -16,6 +17,12 @@ public class AllModelsVo {
 	}
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
 	}
 	
 	

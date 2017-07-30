@@ -20,7 +20,7 @@ public class EmailServiceImpl{
     public void sendSimpleMessage(
       String to, String subject, String text) {
     	
-    	String pathToAttachment = "D:\\test.txt";
+    	//String pathToAttachment = "D:\\test.txt";
     	
     	try {
     		MimeMessage message = emailSender.createMimeMessage();

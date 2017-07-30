@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.gb.model.SellDetail;
 import com.gb.vo.SellDetailVo;
+import com.gb.vo.SellDetailVo2;
 
 public interface BillingService {
 
 	public void genrateBill();
 	public List<SellDetailVo> getSellOrders();
-	public boolean updateSellOrder(SellDetail sellDetail);
 	public boolean deleteSellOrder(Long sellOrderId);
-	public boolean returnSellOrder(SellDetail detail);
-	
+	public boolean updateSellOrder(SellDetailVo2 sellDetail);
+	public boolean changePaymentStatus(Long id, String t, Long p);
 }

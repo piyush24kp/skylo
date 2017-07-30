@@ -32,48 +32,53 @@ this route provider for gust and member users
 (function() {
 angular.module('app')
 
-    .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-        $routeProvider
-            .when('/home', {
-                templateUrl: 'GB/app/layout/screens/home/home.tmpl.html',
-                controller: 'homeCtr',
-                controllerAs: 'vm',
-            })
-            .when('/billing', {
-                templateUrl: 'GB/app/layout/screens/billing/billing.tmpl.html',
-                controller: 'billingCtr',
-                controllerAs: 'vm',
-            })
-            .when('/login', {
-                templateUrl: 'GB/app/layout/screens/login/login.tmpl.html',
-                controller: 'loginCtr',
-                controllerAs: 'vm',
-            })
-            .when('/setting', {
-                templateUrl: 'GB/app/layout/screens/login/setting.tmpl.html',
-                controller: 'loginCtr',
-                controllerAs: 'vm',
-            })
-            .when('/review', {
-                templateUrl: 'GB/app/layout/screens/review/review.tmpl.html',
-                controller: 'reviewCtr',
-                controllerAs: 'vm',
-            })
-            .when('/error', {
-                templateUrl: 'GB/app/layout/screens/contactAdmin.tmpl.html',
+        .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+            $routeProvider
+                .when('/home', {
+                    templateUrl: 'GB/app/layout/screens/home/home.tmpl.html',
+                    controller: 'homeCtr',
+                    controllerAs: 'vm',
+                })
+                .when('/billing', {
+                    templateUrl: 'GB/app/layout/screens/billing/billing.tmpl.html',
+                    controller: 'billingCtr',
+                    controllerAs: 'vm',
+                })
+                .when('/login', {
+                    templateUrl: 'GB/app/layout/screens/login/login.tmpl.html',
+                    controller: 'loginCtr',
+                    controllerAs: 'vm',
+                })
+                .when('/setting', {
+                    templateUrl: 'GB/app/layout/screens/login/setting.tmpl.html',
+                    controller: 'loginCtr',
+                    controllerAs: 'vm',
+                })
+                .when('/review', {
+                    templateUrl: 'GB/app/layout/screens/review/review.tmpl.html',
+                    controller: 'reviewCtr',
+                    controllerAs: 'vm',
+                })
+                .when('/expense', {
+                    templateUrl: 'GB/app/layout/screens/expense/expense.tmpl.html',
+                    controller: 'expenseCtr',
+                    controllerAs: 'vm',
+                })
+                .when('/error', {
+                    templateUrl: 'GB/app/layout/screens/contactAdmin.tmpl.html',
 
-            })
-            .otherwise({
-                redirectTo: '/login'
-            });
+                })
+                .otherwise({
+                    redirectTo: '/login'
+                });
 
-    }]).config(['$httpProvider', function($httpProvider) {
-        $httpProvider.defaults.headers.common = {
-            "Accept": "application/json;charset=utf-8",
-            'Content-Type': 'application/json; charset=utf-8',
-            /*  'X-Frame-Options': 'ALLOW-FROM SAMEORIGIN'*/
-        };
-    }]);
+        }]).config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.headers.common = {
+                "Accept": "application/json;charset=utf-8",
+                'Content-Type': 'application/json; charset=utf-8',
+                /*  'X-Frame-Options': 'ALLOW-FROM SAMEORIGIN'*/
+            };
+        }]);
 
 
 })();
@@ -226,11 +231,15 @@ angular
             saveModel: saveModel,
             updateStock: updateStock,
             deleteStock: deleteStock,
-            returnSellOrder: returnSellOrder,
+            changePaymentStatus: changePaymentStatus,
             updateSellOrder: updateSellOrder,
             getChartDetail: getChartDetail,
             generateExcel: generateExcel,
-            changePwd: changePwd
+            changePwd: changePwd,
+            setExpense: setExpense,
+            getExpense: getExpense,
+            getHistory: getHistory,
+            searchExp: searchExp
         };
         return service;
 
@@ -303,9 +312,14 @@ angular
                 .then(getDataComplete);
         }
 
-        function returnSellOrder(data) {
-            var url = '/billing/returnSellOrder';
-            return $http.post(config.APIurl + url, data)
+        function changePaymentStatus(params) {
+            var url = '/billing/changePaymentStatus?id=' + params.orderId + '&t=' + params.payment + '&p=';
+            if (params.payment === 'Paid') {
+                url = url + params.amount;
+            } else {
+                url = url + params.amountPaid;
+            }
+            return $http.get(config.APIurl + url)
                 .then(getDataComplete);
         }
 
@@ -376,6 +390,30 @@ angular
         function generateExcel(param) {
             var url = '/myexcel';
             return $http.post(config.APIurl + url, param)
+                .then(getDataComplete);
+        }
+
+        function getExpense() {
+            var url = '/getExpense';
+            return $http.get(config.APIurl + url)
+                .then(getDataComplete);
+        }
+
+        function setExpense(data) {
+            var url = '/setExpense';
+            return $http.post(config.APIurl + url, data)
+                .then(getDataComplete);
+        }
+
+        function getHistory(data) {
+            var url = '/getHistory';
+            return $http.post(config.APIurl + url, data)
+                .then(getDataComplete);
+        }
+
+        function searchExp(param) {
+            var url = '/searchExpence' + "?q=" + param;
+            return $http.get(config.APIurl + url)
                 .then(getDataComplete);
         }
 
@@ -544,7 +582,7 @@ var core = angular.module('app.core');
         appTitle: 'GB',
         version: '1.0.0',
         //development
-        APIurl: 'http://localhost:9090'
+        APIurl: 'http://localhost:8080'
 
     };
 
@@ -559,20 +597,26 @@ var core = angular.module('app.core');
 
     function run($rootScope, $location, config, $cookies, $window) {
 
-        /*$rootScope.$on("$routeChangeStart", function(event, next, current) {
+        $rootScope.$on("$routeChangeStart", function(event, next, current) {
 
             $rootScope.isLogin = true;
             var getcookie = $cookies.get('isLogin');
 
+            if ($location.path() === '/login') {
+                $cookies.remove('isLogin');
+                $cookies.remove('userDetail');
+            }
             if (getcookie === 'false' || getcookie === undefined) {
                 $rootScope.isLogin = false;
+                $location.path('/login');
+
             } else {
                 $rootScope.isLogin = true;
 
                 $rootScope.userDetail = $cookies.getObject('userDetail');
             }
 
-        });*/
+        });
     }
 
 
@@ -659,21 +703,38 @@ angular
             }
         }*/
 
+        $rootScope.$on('sellOrder', function(event, args) {
+            vm.getSellOrders();
+        });
+
         vm.paymentChange = paymentChange;
 
         function paymentChange(row) {
 
             var tmpData = row;
+            var model = {};
+            var brand = {};
+            angular.copy(tmpData.brand, brand);
+            angular.copy(tmpData.model, model);
             tmpData.brand = tmpData.brand.brandId;
             tmpData.model = tmpData.model.modelId;
 
-            return authfactory.updateSellOrder(row).then(function successCallback(response) {
+            // console.log(tmpData);
+            return authfactory.updateSellOrder(tmpData).then(function successCallback(response) {
                 if (response.status === 200) {
-                    toastr.success("Stock Added");
+                    toastr.success("Updated Successfully");
                 }
+                if (row.payment === 'Paid' || row.payment === 'Due') {
+                    row.returnDate = '';
+                }
+                row.brand = brand;
+                row.model = model;
             }, function errorCallback(response) {
+                row.brand = brand;
+                row.model = model;
                 return false;
             });
+
         }
 
         vm.selectTab = selectTab;
@@ -697,6 +758,179 @@ angular
         }
 
         activate();
+
+    }
+})();
+
+// Source: dest/layout/screens/expense/expense.ctr.js
+(function() {
+angular
+        .module('app.layout')
+        .controller('expenseCtr', expenseCtr);
+
+    expenseCtr.$inject = ['$timeout', '$filter', '$q', 'config', '$rootScope', '$cookies', '$scope', '$location', 'authfactory'];
+
+    function expenseCtr($timeout, $filter, $q, config, $rootScope, $cookies, $scope, $location, authfactory) {
+        var vm = this;
+        vm.activeForm = 0;
+        $scope.popup1 = {
+            opened: false
+        };
+        $scope.format = "dd-MMMM-yyyy";
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+
+        $scope.open1 = function() {
+            $scope.popup1.opened = true;
+        };
+        $scope.popup2 = {
+            opened: false
+        };
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+
+        $scope.open2 = function() {
+            $scope.popup2.opened = true;
+        };
+
+        vm.getExpense = getExpense;
+
+        function getExpense() {
+            return authfactory.getExpense().then(function successCallback(response) {
+                if (response.status === 200) {
+                    response = response.data.databean;
+                    vm.expenseList = response;
+                    vm.defaultList = response;
+                }
+            }, function errorCallback(response) {
+                return false;
+            });
+        }
+
+        vm.historyListBtn = historyListBtn;
+
+        function historyListBtn() {
+            return authfactory.getHistory(vm.order).then(function successCallback(response) {
+                if (response.status === 200) {
+                    response = response.data.databean;
+                    vm.historyList = response;
+                }
+            }, function errorCallback(response) {
+                return false;
+            });
+        }
+
+        vm.searchExp = searchExp;
+
+        function searchExp() {
+            if (vm.searchExpense) {
+                return authfactory.searchExp(vm.searchExpense).then(function successCallback(response) {
+                    if (response.status === 200) {
+                        response = response.data.databean;
+                        vm.expenseList = response;
+                    }
+                }, function errorCallback(response) {
+                    return false;
+                });
+            } else {
+                vm.expenseList = vm.defaultList;
+            }
+
+        }
+        vm.selectedHistory = selectedHistory;
+
+        function selectedHistory(row) {
+            console.log(row);
+
+            var r = confirm("Add this to Expense / Income");
+            if (r === true) {
+                var data = {};
+                if (row.historyType === "STOCK") {
+                    data.type = "expense";
+                    data.expenseDate = row.historyDate;
+                    data.expenseName = row.orderDetailVo.orderName + row.orderDetailVo.orderId;
+                    data.amount = row.orderDetailVo.amount;
+                } else {
+                    data.type = "income";
+                    data.expenseDate = row.historyDate;
+                    data.expenseName = row.sellDetailVo.customerName + row.sellDetailVo.orderId;
+                    data.amount = row.sellDetailVo.amount;
+                }
+
+                return authfactory.setExpense(data).then(function successCallback(response) {
+                    if (response.status === 200) {
+                        response = response.data.databean;
+                        toastr.success("Added Successfully.");
+                        vm.expenseList.push(data);
+
+                    }
+                }, function errorCallback(response) {
+                    toastr.error("error");
+                    return false;
+                });
+
+            }
+        }
+
+        vm.getExpense();
+
+        vm.cancel = function() {
+            $scope.$emit("cancelModal");
+        };
+
+    }
+})();
+
+// Source: dest/layout/screens/expense/expenseModal.ctr.js
+(function() {
+angular
+        .module('app.layout')
+        .controller('expenseModalCtr', expenseModalCtr);
+
+    expenseModalCtr.$inject = ['$timeout', '$filter', '$q', 'config', '$rootScope', '$cookies', '$scope', '$location', 'authfactory'];
+
+    function expenseModalCtr($timeout, $filter, $q, config, $rootScope, $cookies, $scope, $location, authfactory) {
+        var vm = this;
+        vm.activeForm = 0;
+        vm.expense = {};
+        $scope.popup1 = {
+            opened: false
+        };
+        $scope.format = "dd-MMMM-yyyy";
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+
+        $scope.open1 = function() {
+            $scope.popup1.opened = true;
+        };
+
+        vm.expense.type = $scope.modalopt.expense;
+
+        vm.setExpense = setExpense;
+
+        function setExpense() {
+            return authfactory.setExpense(vm.expense).then(function successCallback(response) {
+                if (response.status === 200) {
+                    response = response.data.databean;
+                    toastr.success("Added Successfully.");
+                }
+            }, function errorCallback(response) {
+                toastr.error("error");
+                return false;
+            });
+        }
+
+        vm.cancel = function() {
+            $scope.$emit("cancelModal");
+        };
 
     }
 })();
@@ -766,23 +1000,35 @@ angular
         vm.getOrders();
 
         $rootScope.$on('addOrder', function(event, args) {
-            vm.orderDetails.push(args.order);
-            vm.rowCollection.push(args.order);
+            // angular.forEach(vm.orderDetails, function(value, key) {
+            //     if (value.orderId === args.order.orderId) {
+            //         value = args.order;
+            //     }
+            // });
+            // angular.forEach(vm.rowCollection, function(value, key) {
+            //     if (value.orderId === args.order.orderId) {
+            //         value = args.order;
+            //     }
+            // });
+            vm.getOrders();
         });
 
         $rootScope.$on('supplierOrder', function(event, args) {
-            vm.supplierDetail.push(args.brand);
-            vm.suppDetailCollection.push(args.brand);
+            // vm.supplierDetail.push(args.brand);
+            // vm.suppDetailCollection.push(args.brand);
+            vm.getSupplier();
         });
 
         $rootScope.$on('brandOrder', function(event, args) {
-            vm.brandDetail.push(args.brand);
-            vm.brandDetailList.push(args.brand);
+            // vm.brandDetail.push(args.brand);
+            // vm.brandDetailList.push(args.brand);
+            vm.getBrand();
         });
 
         $rootScope.$on('modelOrder', function(event, args) {
-            vm.modelDetail.push(args.brand);
-            vm.modelDetailList.push(args.brand);
+            // vm.modelDetail.push(args.brand);
+            // vm.modelDetailList.push(args.brand);
+            vm.getModel();
         });
 
 
@@ -914,6 +1160,8 @@ angular
                 if (response.status === 200) {
                     response = response.data.databean;
                     $rootScope.isLogin = true;
+                    $cookies.put('isLogin', true);
+                    $cookies.putObject('userDetail', response);
                     $location.path('/home');
                     toastr.success("Login Successfully");
 
@@ -957,6 +1205,16 @@ angular
     function addModalCtr($timeout, $filter, $q, config, $rootScope, $cookies, $scope, $location, authfactory) {
         var vm = this;
         vm.order = {};
+        vm.order.size = {};
+        vm.order.size.s = 0;
+        vm.order.size.m = 0;
+        vm.order.size.l = 0;
+        vm.order.size.xl = 0;
+        vm.order.size.xxl = 0;
+        vm.order.size.xxxl = 0;
+        vm.perUnit = 0;
+        vm.order.amount = vm.perUnit * (vm.order.size.s + vm.order.size.m + vm.order.size.l + vm.order.size.xl + vm.order.size.xxl + vm.order.size.xxxl);
+
         var params = {};
         var option = {};
         var modalData = {};
@@ -1099,6 +1357,9 @@ angular
             return authfactory.updateStock(vm.order).then(function successCallback(response) {
                 if (response.status === 200) {
                     response = response.data.databean;
+                    $scope.$emit("addOrder", {
+                        order: response
+                    });
                     toastr.success("Stock Updated");
                     $scope.$emit("cancelModal");
                     return response;
@@ -1109,12 +1370,15 @@ angular
             });
         }
 
-        vm.returnItem = returnItem;
+        vm.changePaymentStatus = changePaymentStatus;
 
-        function returnItem() {
-            return authfactory.returnSellOrder(vm.order).then(function successCallback(response) {
+        function changePaymentStatus() {
+            return authfactory.changePaymentStatus(vm.order).then(function successCallback(response) {
                 if (response.status === 200) {
                     response = response.data.databean;
+                     $scope.$emit("sellOrder", {
+                        order: response
+                    });
                     toastr.success("Stock Updated");
                     $scope.$emit("cancelModal");
                     return response;
@@ -1185,6 +1449,30 @@ angular
             });
         }
         vm.changeBrand(vm.order.brand);
+
+        vm.getPerUnit = getPerUnit;
+
+        function getPerUnit() {
+
+            if (vm.order.model) {
+                angular.forEach(vm.modelDetail, function(value, key) {
+                    if (value.modelId === vm.order.model) {
+                        vm.perUnit = value.price;
+                    }
+                });
+
+            }
+        }
+
+        vm.getPerUnit();
+
+        vm.getAmount = getAmount;
+
+        function getAmount() {
+            if (vm.perUnit) {
+                vm.order.amount = vm.perUnit * (vm.order.size.s + vm.order.size.m + vm.order.size.l + vm.order.size.xl + vm.order.size.xxl + vm.order.size.xxxl);
+            }
+        }
 
         vm.cancel = function() {
             $scope.$emit("cancelModal");

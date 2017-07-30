@@ -1,6 +1,6 @@
 <div class="container">
    
-  <form name="loginForm" >
+  <form name="loginForm" ng-submit="vm.changePwd()">
     <div class="form-group">
       <label for="username">User Name</label>
       <input type="text" class="form-control" id="userId" ng-model="vm.login.userId" required>
@@ -17,6 +17,6 @@
     </div>
 
 
-     <button class="btn btn-primary" type="button" ng-click="vm.changePwd()" ng-disabled="!loginForm.$valid">Login</button>
+     <button class="btn btn-primary" type="button"  ng-disabled="!loginForm.$valid">Change Password</button>
   </form>
 </div>

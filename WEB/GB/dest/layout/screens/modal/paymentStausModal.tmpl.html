@@ -1,0 +1,41 @@
+<div -ng-controller="addModalCtr as vm">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Return Item </h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            
+           <form name="Order">
+              <div class="form-group">
+                <label for="Invoice">Invoice No</label>
+                <input type="text" class="form-control" id="brandName" ng-model="vm.order.invoiceNo" required disabled="true">
+              </div>
+
+              <div class="form-group">
+                <label for="paymentStatus"> Payment Status</label>
+                <select id="payment" ng-model="vm.order.payment" class="form-control">
+                  <option value="Due">Due</option>
+                  <option value="Paid">Paid</option>
+                </select>
+              </div>
+              <div class="form-group" >
+                <label for="Amount">Amount</label>
+                <input type="number" class="form-control" id="Amount" ng-model="vm.order.amount" required disabled>
+              </div>
+
+              <div class="form-group" ng-if="vm.order.payment == 'Due'">
+                <label for="orderId">Amount Paid</label>
+                <input type="number" class="form-control" id="brandName" ng-model="vm.order.amountPaid" required>
+              </div>
+
+              <div class="form-group" ng-if="vm.order.payment == 'Due'">
+                <label for="orderId">Amount Due</label>
+                <input type="number" class="form-control" id="brandName" ng-model="vm.order.amountDue" value="{{vm.order.amount - vm.order.amountPaid}}" disabled>
+              </div>
+              
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="vm.changePaymentStatus()" ng-disabled="!Order.$valid">Save</button>
+            <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+        </div>
+</div>

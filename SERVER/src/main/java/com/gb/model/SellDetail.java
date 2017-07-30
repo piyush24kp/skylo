@@ -43,14 +43,17 @@ public class SellDetail {
 	@Column(name="amount")
 	private Long amount;
 	
-	@Column(name="payment")
-	private String payment;
-	
 	@Column(name="returnDate")
 	private Date returnDate;
 	
-	@Column(name="quantity")
-	private Integer quantity;
+	@Column(name="payment")
+	private String payment;
+	
+	@Column(name="size")
+	private Long size;
+	
+	@Column(name="amountPaid")
+	private Long amountPaid;
 	
 	public Long getOrderId() {
 		return orderId;
@@ -112,22 +115,31 @@ public class SellDetail {
 	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
+	public Date getReturnDate() {
+		return returnDate;
+	}
+	public Long getSize() {
+		return size;
+	}
+	public void setSize(Long size) {
+		this.size = size;
+	}
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
+	}
 	public String getPayment() {
 		return payment;
 	}
 	public void setPayment(String payment) {
 		this.payment = payment;
 	}
-	public Date getReturnDate() {
-		return returnDate;
+	public Long getAmountPaid() {
+		return amountPaid;
 	}
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
+	public void setAmountPaid(Long amountPaid) {
+		this.amountPaid = amountPaid;
 	}
-	public Integer getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
+	
+	
+
 }

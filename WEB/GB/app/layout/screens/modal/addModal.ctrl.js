@@ -10,6 +10,16 @@
     function addModalCtr($timeout, $filter, $q, config, $rootScope, $cookies, $scope, $location, authfactory) {
         var vm = this;
         vm.order = {};
+        vm.order.size = {};
+        vm.order.size.s = 0;
+        vm.order.size.m = 0;
+        vm.order.size.l = 0;
+        vm.order.size.xl = 0;
+        vm.order.size.xxl = 0;
+        vm.order.size.xxxl = 0;
+        vm.perUnit = 0;
+        vm.order.amount = vm.perUnit * (vm.order.size.s + vm.order.size.m + vm.order.size.l + vm.order.size.xl + vm.order.size.xxl + vm.order.size.xxxl);
+
         var params = {};
         var option = {};
         var modalData = {};
@@ -152,6 +162,9 @@
             return authfactory.updateStock(vm.order).then(function successCallback(response) {
                 if (response.status === 200) {
                     response = response.data.databean;
+                    $scope.$emit("addOrder", {
+                        order: response
+                    });
                     toastr.success("Stock Updated");
                     $scope.$emit("cancelModal");
                     return response;
@@ -162,12 +175,15 @@
             });
         }
 
-        vm.returnItem = returnItem;
+        vm.changePaymentStatus = changePaymentStatus;
 
-        function returnItem() {
-            return authfactory.returnSellOrder(vm.order).then(function successCallback(response) {
+        function changePaymentStatus() {
+            return authfactory.changePaymentStatus(vm.order).then(function successCallback(response) {
                 if (response.status === 200) {
                     response = response.data.databean;
+                    $scope.$emit("sellOrder", {
+                        order: response
+                    });
                     toastr.success("Stock Updated");
                     $scope.$emit("cancelModal");
                     return response;
@@ -238,6 +254,30 @@
             });
         }
         vm.changeBrand(vm.order.brand);
+
+        vm.getPerUnit = getPerUnit;
+
+        function getPerUnit() {
+
+            if (vm.order.model) {
+                angular.forEach(vm.modelDetail, function(value, key) {
+                    if (value.modelId === vm.order.model) {
+                        vm.perUnit = value.price;
+                    }
+                });
+
+            }
+        }
+
+        vm.getPerUnit();
+
+        vm.getAmount = getAmount;
+
+        function getAmount() {
+            if (vm.perUnit) {
+                vm.order.amount = vm.perUnit * (vm.order.size.s + vm.order.size.m + vm.order.size.l + vm.order.size.xl + vm.order.size.xxl + vm.order.size.xxxl);
+            }
+        }
 
         vm.cancel = function() {
             $scope.$emit("cancelModal");

@@ -2,6 +2,7 @@ package com.gb.vo;
 
 public class ResponceData {
 
+	private Page page;
 	private Object databean;
 	private String message;
 	private String error;
@@ -24,6 +25,11 @@ public class ResponceData {
 	public void setError(String error) {
 		this.error = error;
 	}
-	
+	public Page getPage() {
+		return page;
+	}
+	public void setPage(Page page) {
+		this.page = page;
+	}
 	
 }

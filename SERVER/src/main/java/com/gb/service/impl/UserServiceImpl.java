@@ -19,12 +19,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository ;
 
-	@Override
-	public void login() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public List<LoginDetail> login(LoginDetail loginDetail) {
 		return userRepository.login(loginDetail);
 	}

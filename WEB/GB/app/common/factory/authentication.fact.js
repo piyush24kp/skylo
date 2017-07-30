@@ -28,11 +28,15 @@
             saveModel: saveModel,
             updateStock: updateStock,
             deleteStock: deleteStock,
-            returnSellOrder: returnSellOrder,
+            changePaymentStatus: changePaymentStatus,
             updateSellOrder: updateSellOrder,
             getChartDetail: getChartDetail,
             generateExcel: generateExcel,
-            changePwd: changePwd
+            changePwd: changePwd,
+            setExpense: setExpense,
+            getExpense: getExpense,
+            getHistory: getHistory,
+            searchExp: searchExp
         };
         return service;
 
@@ -105,9 +109,14 @@
                 .then(getDataComplete);
         }
 
-        function returnSellOrder(data) {
-            var url = '/billing/returnSellOrder';
-            return $http.post(config.APIurl + url, data)
+        function changePaymentStatus(params) {
+            var url = '/billing/changePaymentStatus?id=' + params.orderId + '&t=' + params.payment + '&p=';
+            if (params.payment === 'Paid') {
+                url = url + params.amount;
+            } else {
+                url = url + params.amountPaid;
+            }
+            return $http.get(config.APIurl + url)
                 .then(getDataComplete);
         }
 
@@ -178,6 +187,30 @@
         function generateExcel(param) {
             var url = '/myexcel';
             return $http.post(config.APIurl + url, param)
+                .then(getDataComplete);
+        }
+
+        function getExpense() {
+            var url = '/getExpense';
+            return $http.get(config.APIurl + url)
+                .then(getDataComplete);
+        }
+
+        function setExpense(data) {
+            var url = '/setExpense';
+            return $http.post(config.APIurl + url, data)
+                .then(getDataComplete);
+        }
+
+        function getHistory(data) {
+            var url = '/getHistory';
+            return $http.post(config.APIurl + url, data)
+                .then(getDataComplete);
+        }
+
+        function searchExp(param) {
+            var url = '/searchExpence' + "?q=" + param;
+            return $http.get(config.APIurl + url)
                 .then(getDataComplete);
         }
 

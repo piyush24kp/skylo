@@ -1,0 +1,42 @@
+{
+  "name": "Gb",
+  "description": "Gb",
+  "main": "index.html",
+  "authors": [
+    "PiyushPatil"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "gb"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-resource": "1.5.7",
+    "angular-animate": "1.5.7",
+    "angular-cookies": "1.5.7",
+    "angular-sanitize": "1.5.7",
+    "angular-route": "1.5.7",
+    "angular-touch": "1.5.7",
+    "angular-bootstrap": "^1.3.3",
+    "angular-translate": "^2.11.0",
+    "angular-translate-loader-static-files": "2.13.0",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.6.3",
+    "less": "^2.7.1",
+    "toastr": "^2.1.3",
+    "moment": "^2.14.1"
+  },
+  "dependencies": {
+    "angular-material": "^1.1.1",
+    "angular-smart-table": "^2.1.8",
+    "highcharts": "^5.0.11"
+  }
+}

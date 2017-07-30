@@ -19,7 +19,7 @@
         appTitle: 'GB',
         version: '1.0.0',
         //development
-        APIurl: 'http://localhost:9090'
+        APIurl: 'http://localhost:8080'
 
     };
 
@@ -34,20 +34,26 @@
 
     function run($rootScope, $location, config, $cookies, $window) {
 
-        /*$rootScope.$on("$routeChangeStart", function(event, next, current) {
+        $rootScope.$on("$routeChangeStart", function(event, next, current) {
 
             $rootScope.isLogin = true;
             var getcookie = $cookies.get('isLogin');
 
+            if ($location.path() === '/login') {
+                $cookies.remove('isLogin');
+                $cookies.remove('userDetail');
+            }
             if (getcookie === 'false' || getcookie === undefined) {
                 $rootScope.isLogin = false;
+                $location.path('/login');
+
             } else {
                 $rootScope.isLogin = true;
 
                 $rootScope.userDetail = $cookies.getObject('userDetail');
             }
 
-        });*/
+        });
     }
 
 

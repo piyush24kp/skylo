@@ -16,7 +16,8 @@ public class SellDetailVo {
 	private String vendor;
 	private String payment;
 	private Date returnDate;
-	private Integer quantity;
+	private SizeDetailVo size;
+	private Long amountPaid;
 	
 	public Long getOrderId() {
 		return orderId;
@@ -96,11 +97,16 @@ public class SellDetailVo {
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
 	}
-	public Integer getQuantity() {
-		return quantity;
+	public SizeDetailVo getSize() {
+		return size;
 	}
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setSize(SizeDetailVo size) {
+		this.size = size;
 	}
-
+	public Long getAmountPaid() {
+		return amountPaid;
+	}
+	public void setAmountPaid(Long amountPaid) {
+		this.amountPaid = amountPaid;
+	}
 }

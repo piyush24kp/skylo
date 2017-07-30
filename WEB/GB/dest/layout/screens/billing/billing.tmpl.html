@@ -11,7 +11,6 @@
 				<label> Search By  </label>
 					<select ng-model="vm.search" class="input-md form-control">
 						<option value="invoiceNo"> Invoice No</option>
-						<option value="imeiNo"> IMEI No</option>
 						<option value="customerName"> Customer</option>
 						<option value="brand.brandName">Brand</option>
 						<option value="model.modelName">model</option>
@@ -44,57 +43,65 @@
 			</tr>
 			<tr>
 				<th st-sort="invoiceNo">Invoice No</th>
-				<th st-sort="imeiNo">IMEI</th>
 				<th st-sort="customerName">Name</th>
 				<th st-sort="contantNo">Contact No</th>
 				<th st-sort="address">Address</th>
-				<th st-sort="brand.brandName">Brand</th>
 				<th st-sort="model.modelNa">Model</th>
+				<th>S</th>
+				<th>M</th>
+				<th>L</th>
+				<th>XL</th>
+				<th>XXL</th>
+				<th>XXXL</th>
+				<th st-sort="total">Total</th>
 				<th st-sort="sellDate">Sell Date</th>
-				<th st-sort="saleType">Sell Type</th>
+				<!-- <th st-sort="saleType">Sell Type</th> -->
 				<th st-sort="amount">Amount</th>
-				<th st-sort="payment">Payment</th>
-				<th>Return /R Date</th>
+				<th>Amount Paid / Due</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr ng-repeat="row in vm.sellDetail">
 				<td>{{row.invoiceNo}}</td>
-				<td>{{row.imeiNo}}</td>
 				<td>{{row.customerName}}</td>
 				<td>{{row.contantNo}}</td>
 				<td>{{row.address}}</td>
-				<td>{{row.brand.brandName}}</td>
 				<td>{{row.model.modelName}}</td>
+				<td>{{row.size.s}}</td>
+				<td>{{row.size.m}}</td>
+				<td>{{row.size.l}}</td>
+				<td>{{row.size.xl}}</td>
+				<td>{{row.size.xxl}}</td>
+				<td>{{row.size.xxxl}}</td>
+				<td>{{row.size.s + row.size.m + row.size.l +row.size.xl + row.size.xxl + row.size.xxxl}}</td>
 				<td>{{row.sellDate | date}}</td>
-				<td>{{row.saleType}}</td>
 				<td>{{row.amount}}</td>
-				<td>
+				<!-- <td>
 	                <select id="payment" ng-model="row.payment" class="form-control" ng-change="vm.paymentChange(row)">
 	                  <option value="Due">Due</option>
 	                  <option value="Paid">Paid</option>
 	                  <option value="Returned">Returned</option>
 	                </select>
-				</td>
-				<td>
-				<span ng-if="!row.returnDate"><a href="" model-box modaldata="row" 
+				</td> -->
+				 <td>
+				<span ng-if="row.amount - row.amountPaid != 0"><a href="" model-box modaldata="row" 
 					options="
 					{
 					'type':'return',
 					'animation': true,
-                    'templateUrl': 'GB/app/layout/screens/modal/returnOrderModal.tmpl.html',
+                    'templateUrl': 'GB/app/layout/screens/modal/paymentStausModal.tmpl.html',
                     'size': 'sm',
                     
-					}">Return</a></span>
-					<span ng-if="row.returnDate">{{row.returnDate | date}} </span>
-				</td>
+					}">{{row.amountPaid}} Paid / {{row.amount - row.amountPaid}} Due</a></span>
+					<span  ng-if="row.amount - row.amountPaid == 0">Paid</span>
+				</td> 
 				</tr>
 
 			</tbody>
 
 			<tfoot>
 			<tr>
-				<td colspan="11" class="text-center">
+				<td colspan="15" class="text-center">
 					<div st-pagination="" st-items-by-page="vm.itemsByPage" st-displayed-pages="5"></div>
 				</td>
 			</tr>

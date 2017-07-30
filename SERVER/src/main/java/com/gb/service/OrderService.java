@@ -10,13 +10,15 @@ import com.gb.vo.AllSuppliersDetailVo;
 import com.gb.vo.BrandDetailVo;
 import com.gb.vo.CategoryDetailVo;
 import com.gb.vo.OrderDetailVo;
+import com.gb.vo.OrderDetailVo2;
+import com.gb.vo.Page;
 import com.gb.vo.SupplierDetailVo;
 
 public interface OrderService {
 
-	public List<OrderDetailVo> getOrders();
-	public OrderDetailVo createOrder(OrderDetail odDetailVo);
-	public boolean updateOrder(OrderDetail odDetailVo);
+	public List<OrderDetailVo> getOrders(Integer size, Integer page);
+	public OrderDetailVo createOrder(OrderDetailVo2 odDetailVo);
+	public boolean updateOrder(OrderDetailVo2 odDetailVo);
 	public SupplierDetailVo createSupplier(SupplierDetailVo detailVo);
 	public List<SupplierDetailVo> getSupplier();
 	public List<AllSuppliersDetailVo> getSupplierId();
@@ -31,6 +33,7 @@ public interface OrderService {
 	public boolean deleteBrands(Long brandId);
 	public boolean updateModel(CategoryDetail modelDetail);
 	public boolean deleteModel(Long id);
+	public Page getPagination(int size, int page);
 	
 	
 }

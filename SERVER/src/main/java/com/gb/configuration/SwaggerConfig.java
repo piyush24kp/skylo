@@ -1,42 +1,37 @@
-/*package com.gb.configuration;
+package com.gb.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
-import com.mangofactory.swagger.models.dto.ApiInfo;
-import com.mangofactory.swagger.plugin.EnableSwagger;
-import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger
-@EnableAutoConfiguration
+@EnableSwagger2
 public class SwaggerConfig {
-
-	private SpringSwaggerConfig springSwaggerConfig;
-	 
-    @Autowired
-    public void setSpringSwaggerConfig(SpringSwaggerConfig springSwaggerConfig) {
-        this.springSwaggerConfig = springSwaggerConfig;
-    }
- 
     @Bean
-    public SwaggerSpringMvcPlugin customImplementation() {
-        return new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
-                .apiInfo(new ApiInfo(
-                        "SWAGGER DEMO WITH SPRING BOOT REST API",
-                        "This API is for swagger demo person analysis.",
-                        null,
-                        null,
-                        null,
-                        null
-                ))
-                        //Here we disable auto generating of responses for REST-endpoints
-                .useDefaultResponseMessages(false)
-                        //Here we specify URI patterns which will be included in Swagger docs. Use regex for this purpose.
-                .includePatterns("/stock/.*");
+    public Docket productApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.gb.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(metaData());
+    }
+    private ApiInfo metaData() {
+        ApiInfo apiInfo = new ApiInfo(
+                "Spring Boot REST API",
+                "Spring Boot REST API for Online Store",
+                "1.0",
+                "Terms of service",
+                new Contact("John Thompson", "https://springframework.guru/about/", "john@springfrmework.guru"),
+               "Apache License Version 2.0",
+                "https://www.apache.org/licenses/LICENSE-2.0");
+        return apiInfo;
     }
 }
-*/

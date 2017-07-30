@@ -64,23 +64,35 @@
         vm.getOrders();
 
         $rootScope.$on('addOrder', function(event, args) {
-            vm.orderDetails.push(args.order);
-            vm.rowCollection.push(args.order);
+            // angular.forEach(vm.orderDetails, function(value, key) {
+            //     if (value.orderId === args.order.orderId) {
+            //         value = args.order;
+            //     }
+            // });
+            // angular.forEach(vm.rowCollection, function(value, key) {
+            //     if (value.orderId === args.order.orderId) {
+            //         value = args.order;
+            //     }
+            // });
+            vm.getOrders();
         });
 
         $rootScope.$on('supplierOrder', function(event, args) {
-            vm.supplierDetail.push(args.brand);
-            vm.suppDetailCollection.push(args.brand);
+            // vm.supplierDetail.push(args.brand);
+            // vm.suppDetailCollection.push(args.brand);
+            vm.getSupplier();
         });
 
         $rootScope.$on('brandOrder', function(event, args) {
-            vm.brandDetail.push(args.brand);
-            vm.brandDetailList.push(args.brand);
+            // vm.brandDetail.push(args.brand);
+            // vm.brandDetailList.push(args.brand);
+            vm.getBrand();
         });
 
         $rootScope.$on('modelOrder', function(event, args) {
-            vm.modelDetail.push(args.brand);
-            vm.modelDetailList.push(args.brand);
+            // vm.modelDetail.push(args.brand);
+            // vm.modelDetailList.push(args.brand);
+            vm.getModel();
         });
 
 

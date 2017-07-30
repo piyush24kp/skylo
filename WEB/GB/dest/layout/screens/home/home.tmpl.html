@@ -1,5 +1,5 @@
 <div class="col-lg-12" style="background: #fff">
-	<h2>Store Details</h2>
+	<h2>STOCK DETAILS</h2>
 
 
 	<uib-tabset active="activeForm">
@@ -44,30 +44,38 @@
 			</tr>
 			<tr>
 				<th st-sort="orderId">Stock Id</th>
-				<th st-sort="orderName">Order Name</th>
-				<th st-sort="orderDate">Date</th>
-				<th st-sort="brand.brandName">Brand</th>
-				<th st-sort="model.modelNa">Model</th>
-				<th st-sort="quantity">Quantity</th>
-				<th st-sort="category">Category</th>
-				<th st-sort="purchasePrice">Purchase Price</th>
-				<th st-sort="sellPrice">Selling Price</th>
 				<th st-sort="suppliedBy.supplierName">Supplied By</th>
+				<th st-sort="orderDate">Date</th>
+				<!-- <th st-sort="brand.brandName">Brand</th> -->
+				<th st-sort="model.modelNa">Model</th>
+				<th>S</th>
+				<th>M</th>
+				<th>L</th>
+				<th>XL</th>
+				<th>XXL</th>
+				<th>XXXL</th>
+				<th st-sort="total">Total</th>
+				<th st-sort="Amount">Amount</th>
+				<th st-sort="orderName">Remarks</th>
 				<th>Action</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr ng-repeat="row in vm.orderDetails">
 				<td>{{row.orderId}}</td>
-				<td>{{row.orderName}}</td>
-				<td>{{row.orderDate | date}}</td>
-				<td>{{row.brand.brandName}}</td>
-				<td>{{row.model.modelName}}</td>
-				<td>{{row.quantity}}</td>
-				<td>{{row.category}}</td>
-				<td>{{row.purchasePrice}}</td>
-				<td>{{row.sellPrice}}</td>
 				<td>{{row.suppliedBy.supplierName}}</td>
+				<td>{{row.orderDate | date}}</td>
+				<!-- <td>{{row.brand.brandName}}</td> -->
+				<td>{{row.model.modelName}}</td>
+				<td>{{row.size.s}}</td>
+				<td>{{row.size.m}}</td>
+				<td>{{row.size.l}}</td>
+				<td>{{row.size.xl}}</td>
+				<td>{{row.size.xxl}}</td>
+				<td>{{row.size.xxxl}}</td>
+				<td>{{row.size.s + row.size.m + row.size.l +row.size.xl + row.size.xxl + row.size.xxxl}}</td>
+				<td>{{row.amount}}</td>
+				<td>{{row.orderName}}</td>
 				<td>
 					<span style=" margin: 5px;">
 						<a href="" model-box modaldata="row" options="
@@ -87,7 +95,7 @@
 
 			<tfoot>
 			<tr>
-				<td colspan="11" class="text-center">
+				<td colspan="15" class="text-center">
 					<div st-pagination="" st-items-by-page="vm.itemsByPage" st-displayed-pages="5"></div>
 				</td>
 			</tr>
@@ -223,7 +231,7 @@
 				<th st-sort="modelId">Model Id</th>
 				<th st-sort="modelName">Model Name</th>
 				<th st-sort="brandName">Brand Name</th>
-				<th st-sort="storage">Storage</th>
+				<th st-sort="category">Category</th>
 				<th st-sort="price">Price</th>				
 			</tr>
 			</thead>
@@ -232,7 +240,7 @@
 				<td>{{row.modelId}}</td>
 				<td>{{row.modelName}}</td>
 				<td>{{row.brandId.brandName}}</td>
-				<td>{{row.storage}}</td>
+				<td>{{row.category}}</td>
 				<td>{{row.price}}</td>
 			</tbody>
 			<tfoot>

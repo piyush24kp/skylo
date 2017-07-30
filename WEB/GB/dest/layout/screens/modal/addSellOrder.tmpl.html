@@ -11,7 +11,7 @@
               </div>
               <div class="form-group col-lg-6 col-md-6">
                 <label for="contactNo">Contact No</label>
-                <input type="number" class="form-control" id="contactNo" ng-model="vm.order.contactNo">
+                <input type="number" class="form-control" id="contactNo" ng-model="vm.order.contantNo">
               </div>
               <div class="form-group col-lg-6 col-md-6">
                 <label for="address">Address</label>
@@ -23,36 +23,54 @@
               </div>
               <div class="form-group col-lg-6 col-md-6">
                 <label for="Model">Model</label>
-                <select id="model" ng-model="vm.order.model" class="form-control" ng-options="model.modelId as model.modelName for model in vm.modelDetail"></select>
+                <select id="model" ng-model="vm.order.model" class="form-control" ng-change="vm.getPerUnit()" ng-options="model.modelId as model.modelName for model in vm.modelDetail"></select>
               </div>
-              <div class="form-group col-lg-6 col-md-6">
-                <label for="imeiNo">IMEI No</label>
-                <input type="number" class="form-control" id="PurchasePrice" ng-model="vm.order.imeiNo" required>
-              </div>
-              <div class="form-group col-lg-6 col-md-6">
+              <!-- <div class="form-group col-lg-6 col-md-6">
                 <label for="saleType">Sale Type</label>
                 <select id="brand" ng-model="vm.order.saleType" class="form-control">
                   <option value="Offline">Offline</option>
                   <option value="Online">Online</option>
                 </select>
-              </div>
-              <div class="form-group col-lg-6 col-md-6" ng-if="vm.order.saleType == 'Online'">
-                <label for="saleType">Vendor</label>
-                <select id="brand" ng-model="vm.order.vendor" class="form-control">
-                  <option value="Amazon">Amazon</option>
-                  <option value="FlipKart">FlipKart</option>
-                </select>
-              </div>
+              </div> -->
               <div class="form-group col-lg-6 col-md-6">
                 <label for="saleType">Payment</label>
                 <select id="payment" ng-model="vm.order.payment" class="form-control">
                     <option value="Due">Due</option>
                     <option value="Paid">Paid</option>
-                    <option value="Returned">Returned</option>
+                    <!--   -->
                   </select>
                 </div>
+
+                <div class="form-group col-lg-12 col-md-12">
+               
+                  <div class="col-lg-2">
+                    <label for="Size">Select Size(S)</label>
+                  <input class=" form-control" placeholder="S" type="number" ng-model="vm.order.size.s" ng-change="vm.getAmount()"></input>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="Size">(M)</label>
+                    <input class=" form-control" placeholder="M" type="number" ng-model="vm.order.size.m" ng-change="vm.getAmount()"></input>
+                  </div>
+                  <div class="col-lg-2">
+                      <label for="Size">(L)</label>
+                    <input class="form-control" placeholder="L" type="number" ng-model="vm.order.size.l" ng-change="vm.getAmount()"></input>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="Size">(Xl)</label>
+                    <input class="form-control" placeholder="XL" type="number" ng-model="vm.order.size.xl" ng-change="vm.getAmount()"></input>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="Size">(XXl)</label>
+                    <input class="form-control" placeholder="XXL" type="number" ng-model="vm.order.size.xxl" ng-change="vm.getAmount()"></input>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="Size">(XXXl)</label>
+                    <input class="form-control" placeholder="XXXL" type="number" ng-model="vm.order.size.xxxl" ng-change="vm.getAmount()"></input>
+                  </div>
+                </div>
+
               <div class="form-group col-lg-6 col-md-6">
-                <label for="amount">Amount</label>
+                <label for="amount">Amount({{vm.perUnit}} / Per Unit)</label>
                  <input type="number" class="form-control" id="amount" ng-model="vm.order.amount">
               </div>
               <div class="form-group col-md-6">

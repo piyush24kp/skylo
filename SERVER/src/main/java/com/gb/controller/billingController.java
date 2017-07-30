@@ -17,6 +17,7 @@ import com.gb.model.SellDetail;
 import com.gb.service.impl.BillingServiceImpl;
 import com.gb.vo.ResponceData;
 import com.gb.vo.SellDetailVo;
+import com.gb.vo.SellDetailVo2;
 
 @Controller
 @RequestMapping(value="/billing")
@@ -42,7 +43,7 @@ public class billingController {
 	}
 	
 	@RequestMapping(value = "/setSellOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <ResponceData> setSellOrder(@RequestBody SellDetail sellDetail){
+	public ResponseEntity <ResponceData> setSellOrder(@RequestBody SellDetailVo2 sellDetail){
 		ResponceData responce = new ResponceData();
 		SellDetailVo detail  = billingServiceImpl.setSellOrder(sellDetail); 
 		if (detail != null)
@@ -57,7 +58,7 @@ public class billingController {
 	}
 	
 	@RequestMapping(value = "/updateSellOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <ResponceData> updateSellOrder(@RequestBody SellDetail sellDetail){
+	public ResponseEntity <ResponceData> updateSellOrder(@RequestBody SellDetailVo2 sellDetail){
 		ResponceData responce = new ResponceData();
 		boolean flag = billingServiceImpl.updateSellOrder(sellDetail); 
 		if (flag)
@@ -82,12 +83,12 @@ public class billingController {
     	return new ResponseEntity<ResponceData>(responce, HttpStatus.BAD_REQUEST);
 	}
 	
-	@RequestMapping(value = "/returnSellOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponceData> returnSellOrder(@RequestBody SellDetail sellDetail){
+	@RequestMapping(value = "/changePaymentStatus", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponceData> returnSellOrder(@QueryParam("id") Long id,@QueryParam("t") String t,@QueryParam("p") Long p){
 		ResponceData responce = new ResponceData();
-		if (billingServiceImpl.returnSellOrder(sellDetail))
+		if (billingServiceImpl.changePaymentStatus(id,t,p))
     	{
-			responce.setMessage("Returned Item Succesfully.");
+			responce.setMessage("Status change Succesfully.");
     		return new ResponseEntity<ResponceData>(responce, HttpStatus.OK);	
 		}
 		responce.setMessage("error");

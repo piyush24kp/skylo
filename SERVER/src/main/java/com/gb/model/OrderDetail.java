@@ -23,19 +23,10 @@ public class OrderDetail {
 	private String orderName;
 	
 	@Column(name="amount")
-	private Integer amount;
-	
-	@Column(name="quantity")
-	private Integer quantity;
+	private Long amount;
 	
 	@Column(name="brand")
 	private String brand;
-	
-	@Column(name="purchasePrice")
-	private Integer purchasePrice;
-	
-	@Column(name="sellPrice")
-	private Integer sellPrice;
 	
 	@Column(name="suppliedBy")
 	private Long suppliedBy;
@@ -43,8 +34,11 @@ public class OrderDetail {
 	@Column(name="orderDate")
 	private Date orderDate;
 	
-	@Column(name="orderDate")
+	@Column(name="model")
 	private String model;
+	
+	@Column(name="size")
+	private Long size;
 
 	public Integer getuId() {
 		return uId;
@@ -70,20 +64,12 @@ public class OrderDetail {
 		this.orderName = orderName;
 	}
 
-	public Integer getAmount() {
+	public Long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Integer amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 
 	public String getBrand() {
@@ -92,22 +78,6 @@ public class OrderDetail {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
-	}
-
-	public Integer getPurchasePrice() {
-		return purchasePrice;
-	}
-
-	public void setPurchasePrice(Integer purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
-
-	public Integer getSellPrice() {
-		return sellPrice;
-	}
-
-	public void setSellPrice(Integer sellPrice) {
-		this.sellPrice = sellPrice;
 	}
 
 	public Long getSuppliedBy() {
@@ -128,5 +98,13 @@ public class OrderDetail {
 	public void setModel(String model) {
 		this.model = model;
 	}
+	public Long getSize() {
+		return size;
+	}
+	public void setSize(Long size) {
+		this.size = size;
+	}
+	
+	
 	
 }

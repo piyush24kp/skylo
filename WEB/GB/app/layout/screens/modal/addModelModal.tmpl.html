@@ -18,7 +18,7 @@
                 <!-- <input type="text" class="form-control" id="storage" ng-model="vm.order.storage"> -->
                 <select id="brand" ng-model="vm.order.category" class="form-control" >
                   <option value="Linen">Linen</option>
-                  <option value="Linen">Cotton</option>
+                  <option value="Cotton">Cotton</option>
                   <option value="Polyster">Polyster</option>
                 </select>
               </div>
@@ -28,7 +28,7 @@
               </div>
               <div class="form-group">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" ng-model="vm.order.price">
+                <input type="number" ng-pattern="/^[0-9]{1,7}$/" class="form-control" id="price" ng-model="vm.order.price">
               </div>
             </form>
         </div>

@@ -9,7 +9,6 @@ import com.gb.vo.LoginDetailVo;
 
 public interface UserService {
 
-	public void login();
 	public List<LoginDetail> login(LoginDetail loginDetail);
 	public String changePassword(LoginDetailVo loginDetail);
 	

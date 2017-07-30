@@ -14,6 +14,8 @@
                 if (response.status === 200) {
                     response = response.data.databean;
                     $rootScope.isLogin = true;
+                    $cookies.put('isLogin', true);
+                    $cookies.putObject('userDetail', response);
                     $location.path('/home');
                     toastr.success("Login Successfully");
 
